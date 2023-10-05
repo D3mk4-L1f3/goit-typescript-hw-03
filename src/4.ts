@@ -44,7 +44,7 @@ abstract class House implements IHouse {
   }
 
   comeIn(person: Person): void {
-    if (this.door === true) {
+    if (this.door) {
       this.tenants.push(person);
       console.log("Person has come in the House");
     }
@@ -55,8 +55,9 @@ abstract class House implements IHouse {
 
 class MyHouse extends House {
   openDoor(key: Key): void {
-    this.door = key.getSignature() === this.key.getSignature() ? true : false;
-    console.log(this.door ? "Door is open." : "Door cannot be opened. Invalid key.");
+    const Opened = key.getSignature() === this.key.getSignature();
+    this.door = Opened;
+    console.log(Opened ? "Door is open." : "Door cannot be opened. Invalid key.");
   }
 }
 
