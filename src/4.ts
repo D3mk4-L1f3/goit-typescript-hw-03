@@ -9,6 +9,7 @@ interface IPerson {
 interface IHouse {
     openDoor(key: IKey): void;
     comeIn(person: IPerson): void;
+    isDoorOpen(): boolean;
 }
 
 class Key implements IKey {
@@ -45,24 +46,26 @@ class MyHouse implements IHouse {
     }
 
     openDoor(key: IKey): void {
-        const isValidKey = key.getSignature() === this.key.getSignature();
-        this.door = isValidKey;
-        console.log(isValidKey ? "Access Allowed!" : "Access Denied!");
+        this.door = key.getSignature() === this.key.getSignature();
+        console.log(this.door ? "Access Allowed!" : "Access Denied!");
     }
 
     comeIn(person: IPerson): void {
-    const message = this.door
-        ? `Wellcome, ${person.getKey().getSignature()}!`
-        : "You`re not living here! I`m calling 911...";
-    console.log(message);
-    if (this.door) {
-        this.tenants.push(person);
+        const message = this.isDoorOpen()
+            ? `Welcome, ${person.getKey().getSignature()}!`
+            : "You're not living here! I'm calling 911...";
+        console.log(message);
+        if (this.isDoorOpen()) {
+            this.tenants.push(person);
+        }
     }
-}
+
+    isDoorOpen(): boolean {
+        return this.door;
+    }
 }
 
 const key = new Key();
-
 const house = new MyHouse(key);
 const person = new Person(key);
 
