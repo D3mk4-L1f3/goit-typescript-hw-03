@@ -1,3 +1,16 @@
+interface IPerson {
+  getKey(): Key;
+}
+
+interface IHouse {
+  door: boolean;
+  key: Key;
+  tenants: Person[];
+
+  comeIn(person: Person): void;
+  openDoor(key: Key): void;
+}
+
 class Key {
   private signature: number = Math.random();
 
@@ -6,9 +19,6 @@ class Key {
   }
 }
 
-interface IPerson {
-  getKey(): Key;
-}
 
 class Person implements IPerson {
   private key: Key;
@@ -23,14 +33,6 @@ class Person implements IPerson {
   }
 }
 
-interface IHouse {
-  door: boolean;
-  key: Key;
-  tenants: Person[];
-
-  comeIn(person: Person): void;
-  openDoor(key: Key): void;
-}
 
 abstract class House implements IHouse {
   door: boolean = false;
@@ -53,14 +55,11 @@ abstract class House implements IHouse {
 
 class MyHouse extends House {
   openDoor(key: Key): void {
-    if (key.getSignature() === this.key.getSignature()) {
-      this.door = true;
-      console.log("Door is open.");
-    } else {
-      console.log("Door cannot be opened. Invalid key.");
-    }
+    this.door = key.getSignature() === this.key.getSignature() ? true : false;
+    console.log(this.door ? "Door is open." : "Door cannot be opened. Invalid key.");
   }
 }
+
 
 const key = new Key();
 const house = new MyHouse(key);
